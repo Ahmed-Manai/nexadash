@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+// ─── SCSS @use must be first ─────────────────────────────────────────────────
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+// ─── Tailwind base layers ────────────────────────────────────────────────────
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// ─── Angular Material Theme v21+ with Material Design 3 ─────────────────────
+// Using the correct v21 syntax with @include mat.theme() and built-in palettes
+// Violet palette for primary (replaces indigo #6366e1)
+// Blue palette for secondary (replaces accent #3b82f6)
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$violet-palette,
+        secondary: mat.$blue-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+// Apply dark theme when prefers-color-scheme is dark
+@media (prefers-color-scheme: dark) {
+  html {
+    @include mat.theme(
+      (
+        color: (
+          primary: mat.$violet-palette,
+          secondary: mat.$blue-palette,
+          tertiary: mat.$orange-palette,
+        ),
+        typography: Roboto,
+        density: 0,
+      )
+    );
+  }
+}
+
+// ─── Global base styles ──────────────────────────────────────────────────────
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+* {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+// ─── Reusable component patterns ─────────────────────────────────────────────
+@layer components {
+  .card {
+    @apply bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6;
+  }
+
+  .page-header {
+    @apply text-2xl font-semibold text-slate-800 dark:text-white mb-6;
+  }
+}

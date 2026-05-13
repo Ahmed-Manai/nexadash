@@ -81,3 +81,38 @@ shared/ — Components/directives/pipes with no business logic. Pure UI building
 features/ — Each feature is a self-contained vertical slice: its own components, services, state, and routes. Features are lazy loaded — they don't load until the user navigates to them. This is how enterprise apps stay fast.
 layout/ — The persistent app shell (sidebar, top bar) that wraps all authenticated pages.
 ```
+
+# Angular Material + TailwindCSS
+
+> npx ng add @angular/material --skip-confirmation ### Install Angular Material
+
+> npm install -D tailwindcss@3 postcss autoprefixer ### Install TailwindCSS
+
+> npx tailwindcss init // init tailwindcss
+
+```text
+Why Angular Material?
+Angular Material is Google's implementation of Material Design for Angular. But more importantly for enterprise: it gives you production-ready, accessible, keyboard-navigable components out of the box. Building a <select> with ARIA, keyboard navigation, screen-reader support, RTL layout, and proper focus management from scratch takes weeks. Material gives you this for free.
+
+Alternatives:
+
+PrimeNG — richer component set, heavier bundle
+Tailwind UI / DaisyUI — utility-first, you build the components yourself
+Clarity Design (VMware) — enterprise-focused but less community momentum
+We use Material + Tailwind together — Material for complex interactive components (dialogs, tables, date pickers), Tailwind for layout, spacing, and custom styling. This is the real-world enterprise pattern.
+
+Why TailwindCSS?
+Tailwind is a utility-first CSS framework. Instead of writing:
+
+
+.card { padding: 16px; display: flex; border-radius: 8px; }
+You write:
+
+
+<div class="p-4 flex rounded-lg">
+Benefits at enterprise scale:
+
+No CSS file bloat — Tailwind purges unused utilities at build time
+Consistent spacing/color tokens across the entire app
+Designers and developers speak the same language (gap-4, text-slate-700)
+```
