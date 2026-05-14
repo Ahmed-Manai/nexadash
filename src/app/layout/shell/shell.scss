@@ -1,0 +1,14 @@
+.shell {
+  // Full viewport height, horizontal flex: sidebar | main
+  @apply flex h-screen overflow-hidden;
+
+  &__main {
+    // Takes all remaining width, vertical flex: topbar / content
+    @apply flex flex-col flex-1 overflow-hidden;
+  }
+
+  &__content {
+    // Scrollable content area — features render here
+    @apply flex-1 overflow-y-auto p-6 bg-slate-100 dark:bg-slate-900;
+  }
+}

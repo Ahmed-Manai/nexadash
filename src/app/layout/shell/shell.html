@@ -1,0 +1,14 @@
+<div class="shell">
+  <!-- Fixed sidebar -->
+  <app-sidebar />
+
+  <!-- Right column: topbar + scrollable content -->
+  <div class="shell__main">
+    <app-topbar />
+
+    <!-- Feature pages render here via lazy-loaded routes -->
+    <main class="shell__content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
