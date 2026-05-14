@@ -1,0 +1,23 @@
+<aside class="sidebar">
+  <!-- Logo / Brand -->
+  <div class="sidebar__brand">
+    <mat-icon class="sidebar__logo-icon">bolt</mat-icon>
+    <span class="sidebar__logo-text">NexaDash</span>
+  </div>
+
+  <!-- Navigation links -->
+  <nav class="sidebar__nav">
+    @for (item of navItems; track item) {
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="sidebar__nav-item--active"
+        class="sidebar__nav-item"
+        [matTooltip]="item.label"
+        matTooltipPosition="right"
+      >
+        <mat-icon class="sidebar__nav-icon">{{ item.icon }}</mat-icon>
+        <span class="sidebar__nav-label">{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+</aside>
