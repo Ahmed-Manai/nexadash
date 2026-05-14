@@ -1,0 +1,48 @@
+<header class="topbar">
+  <!-- Left: page title area (we'll populate dynamically via router later) -->
+  <div class="topbar__left">
+    <span class="topbar__title">Welcome back</span>
+  </div>
+
+  <!-- Right: action buttons -->
+  <div class="topbar__actions">
+    <!-- Dark/light mode toggle -->
+    <button
+      mat-icon-button
+      (click)="themeService.toggle()"
+      [matTooltip]="
+        (themeService.theme$ | async) === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+      "
+    >
+      <mat-icon>{{
+        (themeService.theme$ | async) === 'dark' ? 'light_mode' : 'dark_mode'
+      }}</mat-icon>
+    </button>
+
+    <!-- Notifications -->
+    <button mat-icon-button matTooltip="Notifications">
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <!-- User menu -->
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" matTooltip="Account">
+      <div class="topbar__avatar">JD</div>
+    </button>
+
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item>
+        <mat-icon>logout</mat-icon>
+        <span>Sign out</span>
+      </button>
+    </mat-menu>
+  </div>
+</header>
