@@ -10,6 +10,8 @@
 
 > npx ng build --configuration=development ### verify compile
 
+> ng serve ### start the app
+
 # ngModule vs Standalone Components
 
 ```text
@@ -116,3 +118,17 @@ No CSS file bloat — Tailwind purges unused utilities at build time
 Consistent spacing/color tokens across the entire app
 Designers and developers speak the same language (gap-4, text-slate-700)
 ```
+
+# The App Shell (Layout Layer)
+
+> ng g s core/services/theme-service ### Theme Service
+
+> ng g c layout/sidebar ### Sidebar Component
+
+> ng g c layout/topbar ### Topbar Component
+
+> ng g c layout/shell ### Shell Component
+
+> ng g c features/dashboard ## Dashboard Component
+
+# Wire the Routes
