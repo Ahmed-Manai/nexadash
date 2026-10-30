@@ -37,8 +37,8 @@ export class ThemeService {
   private getInitialTheme(): Theme {
     const stored = localStorage.getItem(this.storageKey) as Theme | null;
     if (stored) return stored;
-    // Respect OS preference as fallback
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Respect OS preference as fallback (matchMedia is missing in some environments, e.g. jsdom)
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
   // Called once at app startup from AppComponent to sync the DOM with stored preference
