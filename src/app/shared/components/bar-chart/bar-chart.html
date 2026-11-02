@@ -1,0 +1,98 @@
+@if (orientation() === 'horizontal') {
+  @let h = horizontal();
+  <svg
+    class="block w-full"
+    [attr.height]="h.height"
+    [attr.viewBox]="'0 0 ' + h.width + ' ' + h.height"
+    role="img"
+    [attr.aria-label]="ariaLabel()"
+  >
+    @for (row of h.rows; track row.label) {
+      <g>
+        <title>{{ row.title }}</title>
+        <text class="bar-chart__label" x="0" [attr.y]="row.textY" dominant-baseline="middle">
+          {{ row.label }}
+        </text>
+        <!-- Track (full width) behind the value bar -->
+        <rect
+          class="fill-slate-100 dark:fill-slate-700/60"
+          [attr.x]="h.trackX"
+          [attr.y]="row.barY"
+          [attr.width]="h.trackWidth"
+          [attr.height]="h.barHeight"
+          rx="6"
+        />
+        <rect
+          [attr.x]="h.trackX"
+          [attr.y]="row.barY"
+          [attr.width]="row.barWidth"
+          [attr.height]="h.barHeight"
+          [attr.fill]="color()"
+          rx="6"
+        />
+        <text
+          class="bar-chart__value"
+          [attr.x]="h.valueX"
+          [attr.y]="row.textY"
+          text-anchor="end"
+          dominant-baseline="middle"
+        >
+          {{ row.value }}
+        </text>
+      </g>
+    }
+  </svg>
+} @else {
+  @let v = vertical();
+  <svg
+    class="block w-full"
+    [attr.height]="v.height"
+    [attr.viewBox]="'0 0 ' + v.width + ' ' + v.height"
+    role="img"
+    [attr.aria-label]="ariaLabel()"
+  >
+    @for (tick of v.yTicks; track tick.value) {
+      <line
+        class="stroke-slate-200 dark:stroke-slate-700"
+        [attr.x1]="v.left"
+        [attr.x2]="v.right"
+        [attr.y1]="tick.y"
+        [attr.y2]="tick.y"
+        stroke-dasharray="3 3"
+      />
+      <text
+        class="bar-chart__axis-text"
+        [attr.x]="v.left - 8"
+        [attr.y]="tick.y"
+        text-anchor="end"
+        dominant-baseline="middle"
+      >
+        {{ tick.text }}
+      </text>
+    }
+
+    @for (bar of v.bars; track bar.label) {
+      <g class="bar-chart__bar">
+        <title>{{ bar.title }}</title>
+        <rect
+          [attr.x]="bar.x"
+          [attr.y]="bar.y"
+          [attr.width]="bar.width"
+          [attr.height]="bar.height"
+          [attr.fill]="color()"
+          rx="4"
+        />
+        @if (bar.showLabel) {
+          <text
+            class="bar-chart__axis-text"
+            [attr.x]="bar.center"
+            [attr.y]="v.height - 8"
+            text-anchor="middle"
+          >
+            {{ bar.label }}
+          </text>
+        }
+      </g>
+    }
+  </svg>
+}

@@ -1,0 +1,24 @@
+.line-chart {
+  &__legend {
+    @apply flex flex-wrap gap-4 mb-3 p-0 list-none text-xs text-slate-500 dark:text-slate-400;
+  }
+
+  &__legend-item {
+    @apply flex items-center gap-1.5;
+  }
+
+  &__swatch {
+    @apply inline-block w-2.5 h-2.5 rounded-full flex-shrink-0;
+  }
+
+  // SVG text is colored with fill, not color
+  &__axis-text {
+    @apply fill-slate-400 dark:fill-slate-500;
+    font-size: 11px;
+  }
+
+  &__tooltip {
+    @apply absolute top-2 z-10 pointer-events-none whitespace-nowrap rounded-lg px-3 py-2 text-xs
+           shadow-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700;
+  }
+}

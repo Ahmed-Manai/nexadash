@@ -1,0 +1,22 @@
+// SVG text is colored with fill, not color
+.bar-chart {
+  &__axis-text {
+    @apply fill-slate-400 dark:fill-slate-500;
+    font-size: 11px;
+  }
+
+  &__label {
+    @apply fill-slate-600 dark:fill-slate-300;
+    font-size: 13px;
+  }
+
+  &__value {
+    @apply fill-slate-800 dark:fill-white font-medium;
+    font-size: 13px;
+  }
+
+  // Dim the bar under the pointer slightly as hover feedback
+  &__bar rect:hover {
+    opacity: 0.8;
+  }
+}

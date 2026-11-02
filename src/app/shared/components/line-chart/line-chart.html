@@ -1,0 +1,111 @@
+@let c = chart();
+
+<!-- Legend — only useful when comparing more than one series -->
+@if (c.lines.length > 1) {
+  <ul class="line-chart__legend">
+    @for (line of c.lines; track line.name) {
+      <li class="line-chart__legend-item">
+        <span class="line-chart__swatch" [style.background-color]="line.color"></span>
+        {{ line.name }}
+      </li>
+    }
+  </ul>
+}
+
+<div class="relative">
+  <svg
+    class="block w-full touch-pan-y"
+    [attr.height]="c.height"
+    [attr.viewBox]="'0 0 ' + c.width + ' ' + c.height"
+    role="img"
+    [attr.aria-label]="ariaLabel()"
+    (pointermove)="onPointerMove($event)"
+    (pointerleave)="activeIndex.set(null)"
+  >
+    <!-- Horizontal grid lines with y-axis values -->
+    @for (tick of c.yTicks; track tick.value) {
+      <line
+        class="stroke-slate-200 dark:stroke-slate-700"
+        [attr.x1]="c.left"
+        [attr.x2]="c.right"
+        [attr.y1]="tick.y"
+        [attr.y2]="tick.y"
+        stroke-dasharray="3 3"
+      />
+      <text
+        class="line-chart__axis-text"
+        [attr.x]="c.left - 8"
+        [attr.y]="tick.y"
+        text-anchor="end"
+        dominant-baseline="middle"
+      >
+        {{ tick.text }}
+      </text>
+    }
+
+    <!-- x-axis labels -->
+    @for (label of c.xLabels; track label.i) {
+      <text
+        class="line-chart__axis-text"
+        [attr.x]="label.x"
+        [attr.y]="c.height - 8"
+        text-anchor="middle"
+      >
+        {{ label.text }}
+      </text>
+    }
+
+    <!-- Series: optional area under the first series, then the lines on top -->
+    @for (line of c.lines; track line.name; let first = $first) {
+      @if (first && area()) {
+        <path [attr.d]="line.area" [attr.fill]="line.color" fill-opacity="0.12" />
+      }
+      <path
+        [attr.d]="line.line"
+        [attr.stroke]="line.color"
+        [attr.stroke-dasharray]="first ? null : '6 4'"
+        fill="none"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    }
+
+    <!-- Hover guide line and markers -->
+    @if (active(); as a) {
+      <line
+        class="stroke-slate-300 dark:stroke-slate-600"
+        [attr.x1]="a.x"
+        [attr.x2]="a.x"
+        [attr.y1]="12"
+        [attr.y2]="c.baseline"
+      />
+      @for (item of a.items; track item.name) {
+        <circle
+          class="stroke-white dark:stroke-slate-800"
+          [attr.cx]="a.x"
+          [attr.cy]="item.y"
+          r="4.5"
+          stroke-width="2"
+          [attr.fill]="item.color"
+        />
+      }
+    }
+  </svg>
+
+  @if (active(); as a) {
+    <div
+      class="line-chart__tooltip"
+      [style.left.px]="a.alignRight ? null : a.x + 12"
+      [style.right.px]="a.alignRight ? c.width - a.x + 12 : null"
+    >
+      <p class="font-medium text-slate-800 dark:text-white">{{ a.label }}</p>
+      @for (item of a.items; track item.name) {
+        <p class="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+          <span class="line-chart__swatch" [style.background-color]="item.color"></span>
+          {{ item.name }}: <span class="font-medium">{{ item.text }}</span>
+        </p>
+      }
+    </div>
+  }
+</div>
