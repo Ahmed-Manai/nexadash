@@ -13,8 +13,14 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
+        title: 'Dashboard · NexaDash',
         // Lazy load — the dashboard bundle is only downloaded when the user navigates here
         loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+      {
+        path: 'users',
+        title: 'Users · NexaDash',
+        loadComponent: () => import('./features/users/users').then((m) => m.Users),
       },
     ],
   },

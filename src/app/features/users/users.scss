@@ -1,0 +1,26 @@
+// Feature-specific styles go here — layout is handled by Tailwind classes in the template
+
+.users {
+  &__toolbar {
+    @apply flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-6 pt-6 pb-4;
+  }
+
+  &__search {
+    @apply w-full md:w-80;
+  }
+
+  // Keep columns readable on phones; the .table-scroll wrapper scrolls sideways
+  &__table {
+    @apply w-full;
+    min-width: 760px;
+  }
+
+  &__avatar {
+    @apply w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-semibold
+           bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300;
+  }
+
+  &__empty {
+    @apply px-6 py-10 text-center text-slate-500 dark:text-slate-400;
+  }
+}

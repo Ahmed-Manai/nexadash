@@ -1,0 +1,109 @@
+<div>
+  <h1 class="page-header">Users</h1>
+
+  <!-- Summary counts -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    @for (item of statusCounts(); track item.label) {
+      <div class="card !p-4">
+        <p class="text-sm text-slate-500 dark:text-slate-400 m-0">{{ item.label }}</p>
+        <p class="text-2xl font-bold text-slate-800 dark:text-white mt-1 mb-0">{{ item.value }}</p>
+      </div>
+    }
+  </div>
+
+  <section class="card !p-0 overflow-hidden">
+    <!-- Toolbar: title + search -->
+    <div class="users__toolbar">
+      <div>
+        <h2 class="card-title">All users</h2>
+        <p class="card-subtitle" aria-live="polite">
+          {{ matchCount() }} {{ matchCount() === 1 ? 'user' : 'users' }}
+          @if (filter()) {
+            matching "{{ filter() }}"
+          }
+        </p>
+      </div>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="users__search">
+        <mat-label>Search users</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          #search
+          [value]="filter()"
+          (input)="applyFilter(search.value)"
+          placeholder="Name, e-mail, role or status"
+        />
+        @if (filter()) {
+          <button matSuffix mat-icon-button aria-label="Clear search" (click)="clearFilter()">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="table-scroll">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        matSortActive="joined"
+        matSortDirection="desc"
+        class="users__table"
+      >
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let user">
+            <div class="flex items-center gap-3">
+              <span class="users__avatar" aria-hidden="true">{{ initials(user) }}</span>
+              <span class="font-medium text-slate-800 dark:text-slate-100">{{ user.name }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>E-mail</th>
+          <td mat-cell *matCellDef="let user" class="text-slate-500 dark:text-slate-400">
+            {{ user.email }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+          <td mat-cell *matCellDef="let user">{{ user.role }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let user">
+            <span class="badge" [class]="statusBadge(user)">{{ user.status }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="joined">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Joined</th>
+          <td mat-cell *matCellDef="let user" class="whitespace-nowrap">
+            {{ user.joined | date: 'MMM d, y' }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+
+        <!-- Shown by mat-table when the filter matches nothing -->
+        <tr class="mat-mdc-row" *matNoDataRow>
+          <td class="mat-mdc-cell users__empty" [attr.colspan]="columns.length">
+            No users match "{{ filter() }}".
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [pageSizeOptions]="pageSizes"
+      [pageSize]="10"
+      showFirstLastButtons
+      aria-label="Select page of users"
+    />
+  </section>
+</div>
