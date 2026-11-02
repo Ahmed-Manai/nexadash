@@ -6,6 +6,21 @@ Admin dashboard starter built with Angular 21 standalone components, Angular Mat
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?logo=tailwindcss&logoColor=white)
 ![Angular Material](https://img.shields.io/badge/Angular_Material-21-757575)
+[![CI](https://github.com/Ahmed-Manai/nexadash/actions/workflows/ci.yml/badge.svg)](https://github.com/Ahmed-Manai/nexadash/actions/workflows/ci.yml)
+
+**[Live demo](https://ahmed-manai.github.io/nexadash/)** · If this starter helps you, a ⭐ helps others find it.
+
+![NexaDash dashboard in dark mode](docs/screenshots/dashboard-dark.png)
+
+<details>
+<summary>More screenshots: light mode, users, analytics, mobile</summary>
+
+![Dashboard in light mode](docs/screenshots/dashboard-light.png)
+![Users page with a sortable, searchable table](docs/screenshots/users.png)
+![Analytics page with sessions and traffic charts](docs/screenshots/analytics.png)
+<img src="docs/screenshots/mobile.png" alt="Dashboard on a phone-sized screen" width="300"/>
+
+</details>
 
 ## Features
 
