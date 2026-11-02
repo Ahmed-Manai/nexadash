@@ -1,0 +1,21 @@
+<div class="card h-full">
+  <div class="flex items-start justify-between gap-4">
+    <div class="min-w-0">
+      <p class="text-sm text-slate-500 dark:text-slate-400">{{ metric().label }}</p>
+      <p class="stat-card__value">{{ value() }}</p>
+    </div>
+    <div class="stat-card__icon">
+      <mat-icon aria-hidden="true">{{ metric().icon }}</mat-icon>
+    </div>
+  </div>
+
+  <!-- Trend indicator: arrow + relative change vs the previous period -->
+  <p class="stat-card__trend">
+    <span class="stat-card__badge" [class]="trendClass()">
+      <mat-icon aria-hidden="true">{{ trendIcon() }}</mat-icon>
+      <span class="sr-only">{{ trendWord() }}</span>
+      {{ changeText() }}
+    </span>
+    <span class="text-slate-500 dark:text-slate-400">{{ comparisonLabel() }}</span>
+  </p>
+</div>
