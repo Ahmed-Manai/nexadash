@@ -1,6 +1,6 @@
 # NexaDash
 
-Admin dashboard starter built with Angular 21 standalone components, Angular Material and Tailwind CSS.
+Admin dashboard starter built with Angular 21 standalone components, Angular Material and Tailwind CSS. It ships with dashboard, users, analytics and settings pages driven by a typed mock data layer, so it runs without any backend.
 
 ![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
@@ -9,13 +9,18 @@ Admin dashboard starter built with Angular 21 standalone components, Angular Mat
 
 ## Features
 
-- **App shell layout**: fixed sidebar, top bar and a scrollable content area that hosts routed pages.
-- **Lazy-loaded routes**: the shell and the dashboard page are loaded with `loadComponent`; unknown URLs redirect to the dashboard.
-- **Light / dark theme toggle**: `ThemeService` stores the choice in `localStorage`, falls back to the OS `prefers-color-scheme` setting, and toggles the `dark` class on `<html>` for Tailwind's class-based dark mode.
-- **Sidebar navigation** with Material icons, tooltips and active-link highlighting.
-- **Top bar** with theme switch, notifications button and an account menu (Profile / Settings / Sign out placeholders).
-- **Dashboard page** with a responsive grid of stat cards (currently static placeholder values).
+- **Dashboard**: stat cards with a trend indicator (change vs the previous period, colored by whether the change is good news), a 12-month revenue line chart compared with the previous year, a top products breakdown and a recent orders table with status badges.
+- **Users**: Angular Material table over 48 mock users with sorting, pagination, a search filter (name, e-mail, role, status), status badges, summary counts and an empty state.
+- **Analytics**: traffic stat cards, a 30-day sessions line chart (current vs previous period), traffic by source as a horizontal bar chart and monthly sign-ups as a vertical bar chart.
+- **Settings**: profile form built with reactive forms and validation messages (required, length, e-mail), save / discard handling with a snackbar, and a light / dark theme preference that uses the same `ThemeService` as the top bar toggle.
+- **Dependency-free SVG charts**: reusable `app-line-chart` (multi-series, area fill, legend, hover tooltip) and `app-bar-chart` (vertical or horizontal). Each chart measures its own width with a `ResizeObserver` and draws in real pixels, so text stays crisp at any size. No charting library is added to the bundle.
+- **Deterministic mock data layer**: typed models and a `MockDataService` exposing read-only signals (plus an Observable `getUsers()`). The data is generated from fixed values and a fixed reference date, never `Math.random()` or the current date, so screenshots and tests are stable. Sample companies use fictional names (Contoso, Fabrikam, Northwind...) and e-mail addresses use the reserved `.example` domain.
+- **App shell layout**: sidebar, top bar and a scrollable content area that hosts routed pages. Below the `md` breakpoint the sidebar collapses to an icon rail with tooltips, so pages stay usable down to 375px wide; wide tables scroll horizontally inside their card.
+- **Lazy-loaded routes**: the shell and every page are loaded with `loadComponent` and set a page title; unknown URLs redirect to the dashboard.
+- **Light / dark theme toggle**: `ThemeService` stores the choice in `localStorage`, falls back to the OS `prefers-color-scheme` setting, and toggles the `dark` class on `<html>`. That class drives both Tailwind's `dark:` variants and the Angular Material palette (through `color-scheme`, since `mat.theme()` emits `light-dark()` colors).
+- **Top bar** with theme switch, notifications button and an account menu showing the current profile, with links to Settings.
 - **Material 3 theming** via `mat.theme()` (violet primary, blue secondary, orange tertiary) combined with Tailwind utility classes.
+- **Unit tests** for the mock data service, theme service, formatters, chart scales, every shared component, every page and the route table (Vitest + jsdom).
 - **Code quality tooling**: ESLint (angular-eslint + typescript-eslint), Prettier, and a Husky pre-commit hook running lint-staged.
 
 ## Tech stack
@@ -36,22 +41,35 @@ Admin dashboard starter built with Angular 21 standalone components, Angular Mat
 
 ```text
 src/
-├── index.html                    # Loads Roboto and Material Icons fonts
-├── main.ts                       # bootstrapApplication(App, appConfig)
-├── styles.scss                   # Material theme, Tailwind layers, shared .card / .page-header
+├── index.html                       # Loads Roboto and Material Icons fonts
+├── main.ts                          # bootstrapApplication(App, appConfig)
+├── styles.scss                      # Material theme, Tailwind layers, shared .card / .badge / .page-header
 └── app/
-    ├── app.ts / app.html         # Root component (router outlet)
-    ├── app.config.ts             # Router providers
-    ├── app.routes.ts             # Shell route with lazy-loaded children
+    ├── app.ts / app.html            # Root component (router outlet)
+    ├── app.config.ts                # Router providers
+    ├── app.routes.ts                # Shell route with lazy-loaded pages
     ├── core/
+    │   ├── models/                  # User, Order, StatMetric, chart point / series types
+    │   ├── data/
+    │   │   └── mock-data.ts         # Deterministic mock data (fixed reference date, no randomness)
     │   └── services/
-    │       └── theme-service.ts  # Light/dark theme state
+    │       ├── mock-data-service.ts # Read-only signals over the mock data, profile updates
+    │       └── theme-service.ts     # Light/dark theme state
+    ├── shared/
+    │   ├── components/
+    │   │   ├── line-chart/          # SVG line chart (multi-series, tooltip, legend)
+    │   │   ├── bar-chart/           # SVG bar chart (vertical / horizontal)
+    │   │   └── stat-card/           # Metric card with trend indicator
+    │   └── utils/                   # Number formatters, chart scales, element width signal
     ├── layout/
-    │   ├── shell/                # App shell (sidebar + topbar + <router-outlet>)
-    │   ├── sidebar/              # Navigation
-    │   └── topbar/               # Theme toggle, notifications, account menu
+    │   ├── shell/                   # App shell (sidebar + topbar + <router-outlet>)
+    │   ├── sidebar/                 # Navigation (icon rail on small screens)
+    │   └── topbar/                  # Theme toggle, notifications, account menu
     └── features/
-        └── dashboard/            # Dashboard page
+        ├── dashboard/               # Stat cards, revenue chart, top products, recent orders
+        ├── users/                   # Sortable, paginated, searchable users table
+        ├── analytics/               # Traffic stats and charts
+        └── settings/                # Profile form and theme preference
 ```
 
 The intended layering (core / shared / features / layout) is described in [Notes](#architecture-notes).
@@ -82,6 +100,12 @@ npm run build        # production build into dist/nexadash
 npm run watch        # development build in watch mode
 ```
 
+To serve the app from a sub-path (for example a GitHub Pages project site), set the base href at build time:
+
+```bash
+npx ng build --base-href /nexadash/
+```
+
 ### Test and lint
 
 ```bash
@@ -92,15 +116,16 @@ npm run lint                 # ng lint
 
 GitHub Actions (`.github/workflows/ci.yml`) runs lint, unit tests and the production build on Node 22 for every push and pull request. See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow.
 
+## Mock data
+
+All pages read from `MockDataService` (`src/app/core/services/mock-data-service.ts`), which wraps the constants in `src/app/core/data/mock-data.ts`. To connect a real API, keep the service's public signals and replace their sources with `HttpClient` calls (for example with `toSignal()` or `resource()`); components do not need to change. Profile edits on the Settings page are kept in memory only and reset on reload.
+
 ## Roadmap / ideas
 
-The sidebar already links to these pages; they are not implemented yet and currently fall back to the dashboard:
-
-- Users management page
-- Analytics page
-- Settings page
-- Replace the static stat cards with reusable components fed by a service
 - Authentication (login page, route guards, HTTP interceptors)
+- Replace `MockDataService` with an HTTP-backed implementation
+- Date range selection for the analytics charts
+- User detail / edit dialog on the Users page
 
 ## Notes
 
