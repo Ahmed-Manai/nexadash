@@ -1,0 +1,123 @@
+<div>
+  <h1 class="page-header">Settings</h1>
+
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+    <!-- Profile form -->
+    <section class="card xl:col-span-2 min-w-0">
+      <h2 class="card-title">Profile</h2>
+      <p class="card-subtitle mb-6">
+        How you appear to other members of your workspace. Changes are kept in memory only.
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Full name</mat-label>
+            <input matInput formControlName="fullName" autocomplete="name" required />
+            @if (form.controls.fullName.hasError('required')) {
+              <mat-error>Full name is required.</mat-error>
+            } @else if (form.controls.fullName.hasError('minlength')) {
+              <mat-error>Use at least 2 characters.</mat-error>
+            } @else if (form.controls.fullName.hasError('maxlength')) {
+              <mat-error>Use at most {{ maxLength.name }} characters.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>E-mail</mat-label>
+            <input matInput type="email" formControlName="email" autocomplete="email" required />
+            @if (form.controls.email.hasError('required')) {
+              <mat-error>E-mail is required.</mat-error>
+            } @else if (form.controls.email.hasError('email')) {
+              <mat-error>Enter a valid e-mail address.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Job title</mat-label>
+            <input matInput formControlName="jobTitle" autocomplete="organization-title" />
+            @if (form.controls.jobTitle.hasError('maxlength')) {
+              <mat-error>Use at most {{ maxLength.text }} characters.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Company</mat-label>
+            <input matInput formControlName="company" autocomplete="organization" />
+            @if (form.controls.company.hasError('maxlength')) {
+              <mat-error>Use at most {{ maxLength.text }} characters.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="md:col-span-2">
+            <mat-label>Bio</mat-label>
+            <textarea
+              matInput
+              formControlName="bio"
+              rows="4"
+              placeholder="A few words about yourself"
+            ></textarea>
+            <mat-hint align="end"
+              >{{ form.controls.bio.value.length }} / {{ maxLength.bio }}</mat-hint
+            >
+            @if (form.controls.bio.hasError('maxlength')) {
+              <mat-error>Use at most {{ maxLength.bio }} characters.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="flex flex-wrap justify-end gap-3 mt-4">
+          <button mat-button type="button" (click)="discard()" [disabled]="form.pristine">
+            Discard changes
+          </button>
+          <button mat-flat-button type="submit" [disabled]="form.pristine">Save profile</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="flex flex-col gap-6 min-w-0">
+      <!-- Saved profile summary -->
+      <section class="card">
+        <div class="flex items-center gap-4">
+          <div class="settings__avatar" aria-hidden="true">{{ initials() }}</div>
+          <div class="min-w-0">
+            <p class="font-semibold text-slate-800 dark:text-white m-0 truncate">
+              {{ profile().fullName }}
+            </p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 m-0 truncate">
+              {{ profile().jobTitle }}
+              @if (profile().jobTitle && profile().company) {
+                ·
+              }
+              {{ profile().company }}
+            </p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 m-0 truncate">
+              {{ profile().email }}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Theme preference, backed by ThemeService (same state as the top bar toggle) -->
+      <section class="card">
+        <h2 class="card-title">Appearance</h2>
+        <p class="card-subtitle mb-4">Saved in this browser and applied on every visit.</p>
+        <mat-button-toggle-group
+          class="settings__theme"
+          [value]="theme()"
+          (change)="setTheme($event.value)"
+          aria-label="Theme"
+        >
+          <mat-button-toggle value="light">
+            <mat-icon aria-hidden="true">light_mode</mat-icon>
+            Light
+          </mat-button-toggle>
+          <mat-button-toggle value="dark">
+            <mat-icon aria-hidden="true">dark_mode</mat-icon>
+            Dark
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </section>
+    </div>
+  </div>
+</div>
