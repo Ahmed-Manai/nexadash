@@ -26,21 +26,29 @@ html {
   );
 }
 
-// Apply dark theme when prefers-color-scheme is dark
-@media (prefers-color-scheme: dark) {
-  html {
-    @include mat.theme(
-      (
-        color: (
-          primary: mat.$violet-palette,
-          secondary: mat.$blue-palette,
-          tertiary: mat.$orange-palette,
-        ),
-        typography: Roboto,
-        density: 0,
-      )
-    );
+// mat.theme() emits every system color as light-dark(<light>, <dark>), so the active palette
+// follows the CSS color-scheme property. ThemeService toggles the `dark` class on <html>,
+// and the same class switches Tailwind's dark: variants and Material's palette together.
+html {
+  color-scheme: light;
+
+  &.dark {
+    color-scheme: dark;
   }
+}
+
+// Let Material tables and paginators inherit the surrounding .card background
+html {
+  @include mat.table-overrides(
+    (
+      background-color: transparent,
+    )
+  );
+  @include mat.paginator-overrides(
+    (
+      container-background-color: transparent,
+    )
+  );
 }
 
 // ─── Global base styles ──────────────────────────────────────────────────────
