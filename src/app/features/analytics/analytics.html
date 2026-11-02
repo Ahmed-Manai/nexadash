@@ -1,0 +1,45 @@
+<div>
+  <h1 class="page-header">Analytics</h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+    @for (stat of stats(); track stat.id) {
+      <app-stat-card [metric]="stat" comparisonLabel="vs previous 30 days" />
+    }
+  </div>
+
+  <!-- Daily sessions, current vs previous 30-day period -->
+  <section class="card mt-6 min-w-0">
+    <h2 class="card-title">Sessions over time</h2>
+    <p class="card-subtitle mb-4">Daily sessions, last 30 days vs the 30 days before</p>
+    <app-line-chart
+      [labels]="sessions().labels"
+      [series]="sessions().series"
+      [height]="300"
+      ariaLabel="Daily sessions for the last 30 days compared with the previous period"
+    />
+  </section>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-6">
+    <section class="card min-w-0">
+      <h2 class="card-title">Traffic by source</h2>
+      <p class="card-subtitle mb-4">{{ fullNumber(totalVisits()) }} visits in the last 30 days</p>
+      <app-bar-chart
+        [data]="trafficSources()"
+        orientation="horizontal"
+        [valueFormat]="fullNumber"
+        ariaLabel="Visits by traffic source for the last 30 days"
+      />
+    </section>
+
+    <section class="card min-w-0">
+      <h2 class="card-title">New sign-ups</h2>
+      <p class="card-subtitle mb-4">Per month, last 12 months</p>
+      <app-bar-chart
+        [data]="signups()"
+        color="#0ea5e9"
+        [height]="240"
+        ariaLabel="New sign-ups per month for the last 12 months"
+      />
+    </section>
+  </div>
+</div>

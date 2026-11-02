@@ -22,6 +22,11 @@ export const routes: Routes = [
         title: 'Users · NexaDash',
         loadComponent: () => import('./features/users/users').then((m) => m.Users),
       },
+      {
+        path: 'analytics',
+        title: 'Analytics · NexaDash',
+        loadComponent: () => import('./features/analytics/analytics').then((m) => m.Analytics),
+      },
     ],
   },
   // Catch-all: redirect unknown routes to dashboard
