@@ -23,6 +23,11 @@ export class ThemeService {
     this.apply(next);
   }
 
+  // Explicit choice, e.g. from the Settings page
+  setTheme(theme: Theme): void {
+    this.apply(theme);
+  }
+
   private apply(theme: Theme): void {
     const html = document.documentElement;
     if (theme === 'dark') {
