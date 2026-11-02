@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { Topbar } from './topbar';
 
@@ -9,6 +10,7 @@ describe('Topbar', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Topbar],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Topbar);
@@ -18,5 +20,10 @@ describe('Topbar', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show the profile initials in the avatar', () => {
+    const avatar = fixture.nativeElement.querySelector('.topbar__avatar') as HTMLElement;
+    expect(avatar.textContent?.trim()).toBe('JD');
   });
 });

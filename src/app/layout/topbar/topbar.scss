@@ -25,4 +25,9 @@
     @apply w-8 h-8 rounded-full bg-indigo-500 text-white text-xs font-bold
            flex items-center justify-center;
   }
+
+  // Name + e-mail at the top of the account menu (rendered in an overlay, but still this template)
+  &__menu-header {
+    @apply px-4 py-2;
+  }
 }

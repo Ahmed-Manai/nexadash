@@ -26,18 +26,24 @@
 
     <!-- User menu -->
     <button mat-icon-button [matMenuTriggerFor]="userMenu" matTooltip="Account">
-      <div class="topbar__avatar">JD</div>
+      <div class="topbar__avatar">{{ initials() }}</div>
     </button>
 
     <mat-menu #userMenu="matMenu">
-      <button mat-menu-item>
+      <!-- Profile summary; both links open the Settings page -->
+      <div class="topbar__menu-header">
+        <p class="font-medium text-slate-800 dark:text-white m-0">{{ profile().fullName }}</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 m-0">{{ profile().email }}</p>
+      </div>
+      <mat-divider></mat-divider>
+      <a mat-menu-item routerLink="/settings">
         <mat-icon>person</mat-icon>
         <span>Profile</span>
-      </button>
-      <button mat-menu-item>
+      </a>
+      <a mat-menu-item routerLink="/settings">
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
-      </button>
+      </a>
       <mat-divider></mat-divider>
       <button mat-menu-item>
         <mat-icon>logout</mat-icon>
