@@ -17,5 +17,10 @@
   &__orders {
     @apply w-full;
     min-width: 720px;
+
+    th,
+    td {
+      @apply whitespace-nowrap;
+    }
   }
 }

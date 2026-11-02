@@ -13,6 +13,11 @@
   &__table {
     @apply w-full;
     min-width: 760px;
+
+    th,
+    td {
+      @apply whitespace-nowrap;
+    }
   }
 
   &__avatar {
