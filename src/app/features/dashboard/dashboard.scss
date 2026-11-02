@@ -1,1 +1,21 @@
 // Feature-specific styles go here — layout is handled by Tailwind classes in the template
+
+.dashboard {
+  &__products {
+    @apply flex flex-col gap-5 mt-5 mb-0 p-0 list-none;
+  }
+
+  &__bar-track {
+    @apply h-2 mt-2 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-700;
+  }
+
+  &__bar {
+    @apply h-full rounded-full bg-indigo-500;
+  }
+
+  // Keep columns readable on phones; the .table-scroll wrapper scrolls sideways
+  &__orders {
+    @apply w-full;
+    min-width: 720px;
+  }
+}
