@@ -75,4 +75,45 @@ body {
   .page-header {
     @apply text-2xl font-semibold text-slate-800 dark:text-white mb-6;
   }
+
+  // Card heading row: title + optional subtitle on the left, extra content on the right
+  .card-title {
+    @apply text-base font-semibold text-slate-800 dark:text-white m-0;
+  }
+
+  .card-subtitle {
+    @apply text-sm text-slate-500 dark:text-slate-400 mt-0.5 mb-0;
+  }
+
+  // Status pill used in tables (order status, user status)
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium capitalize
+           whitespace-nowrap;
+
+    &::before {
+      content: '';
+      @apply w-1.5 h-1.5 rounded-full bg-current;
+    }
+  }
+
+  .badge--success {
+    @apply bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400;
+  }
+
+  .badge--warning {
+    @apply bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400;
+  }
+
+  .badge--danger {
+    @apply bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400;
+  }
+
+  .badge--neutral {
+    @apply bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300;
+  }
+
+  // Wrapper that lets wide tables scroll sideways on phones instead of breaking the layout
+  .table-scroll {
+    @apply w-full overflow-x-auto;
+  }
 }
