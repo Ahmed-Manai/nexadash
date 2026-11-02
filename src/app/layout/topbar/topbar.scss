@@ -1,5 +1,5 @@
 .topbar {
-  @apply flex items-center justify-between h-16 px-6
+  @apply flex items-center justify-between h-16 px-4 md:px-6
          bg-white dark:bg-slate-800
          border-b border-slate-200 dark:border-slate-700
          flex-shrink-0;
